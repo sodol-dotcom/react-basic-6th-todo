@@ -65,6 +65,20 @@ const TodoList = () => {
     setTodos(updatedTodos);
   };
 
+  const handleDelete = (id) => {
+    const filteredTodos = todos.filter((todo) => {
+      if(todo.id === id) {
+        return false;    // early return 방식이기 때문에 else가 없어도 된다.
+      }
+      // 내부적으로 로직으로써 '그게 아니면'이 들어가 있다.(else 포함되어 있음) 
+      return true;
+      
+    });
+
+    setTodos(filteredTodos);
+  };
+
+
   return (
     // JSX를 리턴하는 태그는 하나여야 하기 떄문에 div로 감싸줌
     <div>
@@ -85,13 +99,18 @@ const TodoList = () => {
       <ul>
         {todos.map((todo) => (
           <li key={todo.id}>
-            {todo.text}
-            <button
-              onClick={() => handleUpdate(todo.id)}
-              style={{ marginLeft: "10px" }}
+            <p
+              style={{
+                textDecoration: todo.completed ? "line-through": "none",
+              }}
             >
-              {todo.completed ? "Undo" : "Complete"}
+              {todo.text} -{" "}
+              {todo.completed ? <span>완료됨</span> : <span>미완료</span>}
+            </p>
+            <button onClick={() => toggleCompleted(todo.id)}>
+              {todo.completed ? "취소" : "완료"}
             </button>
+            <button onClick={() => handleDelete(todo.id)}>삭제</button>
           </li>
         ))}
       </ul>
